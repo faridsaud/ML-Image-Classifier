@@ -18,11 +18,9 @@ class Network(nn.Module):
         self.dropout = nn.Dropout(p=drop_p)
 
     def forward(self, x):
-
         for each in self.hidden_layers:
             x = F.relu(each(x))
             x = self.dropout(x)
         x = self.output(x)
 
         return F.log_softmax(x, dim=1)
-
