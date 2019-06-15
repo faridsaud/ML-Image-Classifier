@@ -235,3 +235,6 @@ def parse_results(values, indices, classes):
     indices_arr = indices.numpy()[0]
     classes_arr = classes
     return [parse_result(t, indices_arr[i], classes_arr[i]) for i, t in enumerate(values_arr)]
+
+def is_cuda_available():
+    return torch.cuda.is_available()

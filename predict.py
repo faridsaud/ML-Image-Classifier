@@ -1,6 +1,6 @@
 import argparse
 
-from utils import load_model, predict, get_accuracy
+from utils import load_model, predict, is_cuda_available
 
 
 def str2bool(v):
@@ -29,7 +29,7 @@ parser.add_argument("--gpu", type=str2bool, nargs='?',
 
 args = parser.parse_args()
 
-device = 'cuda' if args.gpu == True else 'cpu'
+device = 'cuda' if (args.gpu == True and is_cuda_available() == True) else 'cpu'
 
 model, optimizer = load_model(args.checkpoint)
 

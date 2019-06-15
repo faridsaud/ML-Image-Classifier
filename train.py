@@ -1,6 +1,6 @@
 import argparse
 
-from utils import load_data, init_model, train_model, save_model, predict
+from utils import load_data, init_model, train_model, save_model, is_cuda_available
 
 
 def str2bool(v):
@@ -37,23 +37,25 @@ parser.add_argument("--gpu", type=str2bool, nargs='?',
                     const=True, default=False, help="use cuda instead of cpu")
 
 # additional parameters
-parser.add_argument("--input_size", type=int, help="number of input nodes", default=1024)
-parser.add_argument("--output_size", type=int, help="number of output nodes", default=102)
 parser.add_argument("--batch_size", type=int, help="batch size for the data loader", default=32)
 
 args = parser.parse_args()
 
 data_dir = "./" + args.data_dir
 save_dir = "./" + args.save_dir
-device = 'cuda' if args.gpu == True else 'cpu'
+
+device = 'cuda' if (args.gpu == True and is_cuda_available() == True) else 'cpu'
+
+input_size = 1024
+output_size = 102
 
 dataloaders, image_datasets = load_data(data_dir, args.batch_size)
 
-model, optimizer, criterion = init_model(args.arch, args.input_size, args.output_size, args.hidden_units,
+model, optimizer, criterion = init_model(args.arch, input_size, output_size, args.hidden_units,
                                          args.drop_rate, args.learning_rate)
 
 model, optimizer, criterion, steps = train_model(dataloaders, image_datasets, model, optimizer, criterion, device, args.epochs)
 
-save_model(model, save_dir, optimizer, args.input_size, args.output_size,
+save_model(model, save_dir, optimizer, input_size, output_size,
            args.arch, args.drop_rate, args.epochs)
 
