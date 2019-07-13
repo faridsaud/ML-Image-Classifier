@@ -1,5 +1,5 @@
 # Machine Learning Nanodegree
-# Depp Learning
+# Deep Learning
 ## Project: Image Classifier
 ### Install
 
